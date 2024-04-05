@@ -26,3 +26,5 @@ Things you may want to cover:
 # rbenv
 
 https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-22-04
+
+# docker
