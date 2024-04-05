@@ -13,6 +13,9 @@ class Api
     end
   end
 
-  def parse_soap_payload
+  def message_type?
+    test_request = Rails.root.to_s + '/doc/examples/request.xml'
+    doc =  Nokogiri::XML(File.open(test_request))
+    # hmac = doc.xpath("pa:GetPriceAndAvailability")
   end
 end
