@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+
+<wsdl:definitions
+        xmlns:priceAndAvailability="https://scireum.de/2020/priceAndAvailability/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/priceAndAvailability/">
+    <wsdl:documentation>Webservice for product price and availability.</wsdl:documentation>
+
+    <!-- Types from external XSD -->
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="https://scireum.de/2020/priceAndAvailability/"
+                        schemaLocation="priceAndAvailability.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+
+    <wsdl:message name="GetPriceAndAvailabilityRequest">
+        <wsdl:part name="parameters" element="priceAndAvailability:GetPriceAndAvailability"/>>
+    </wsdl:message>
+    <wsdl:message name="GetPriceAndAvailabilityResponse">
+        <wsdl:part name="parameters" element="priceAndAvailability:GetPriceAndAvailabilityResponse"/>>
+    </wsdl:message>
+
+    <!-- Port types -->
+
+    <wsdl:portType name="PriceAndAvailabilityWebservices">
+        <wsdl:documentation>Webservice for product and voucher price and availability.</wsdl:documentation>
+        <wsdl:operation name="GetPriceAndAvailability">
+            <wsdl:documentation>Get price and availability of products and voucher positions.</wsdl:documentation>
+            <wsdl:input message="priceAndAvailability:GetPriceAndAvailabilityRequest"/>
+            <wsdl:output message="priceAndAvailability:GetPriceAndAvailabilityResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Bindings -->
+
+    <wsdl:binding name="PriceAndAvailabilityWebservice" type="priceAndAvailability:PriceAndAvailabilityWebservices">
+        <wsdl:documentation>Webservice for product and voucher price and availability.</wsdl:documentation>
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetPriceAndAvailability">
+            <soap:operation soapAction="https://scireum.de/2020/priceAndAvailability/GetPriceAndAvailability"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Service -->
+
+    <wsdl:service name="priceAndAvailability">
+        <wsdl:documentation>Webservice for product and voucher price and availability</wsdl:documentation>
+        <wsdl:port name="PriceAndAvailabilityWebservice" binding="priceAndAvailability:PriceAndAvailabilityWebservice">
+            <wsdl:documentation>Webservice providing interaction with product and voucher price and availability for
+                Sellsite
+            </wsdl:documentation>
+            <soap:address location="https://to-be-defined.de/services/"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

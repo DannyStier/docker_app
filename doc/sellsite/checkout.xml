@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+
+<wsdl:definitions
+        xmlns:checkout="https://scireum.de/2020/checkout/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/checkout/">
+    <wsdl:documentation>Webservices for checkout.</wsdl:documentation>
+
+    <!-- Types from external XSD -->
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="checkout.xsd" schemaLocation="checkout.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+
+    <wsdl:message name="GetTourRequest">
+        <wsdl:part name="parameters" element="checkout:GetTour"/>>
+    </wsdl:message>
+    <wsdl:message name="GetTourResponse">
+        <wsdl:part name="parameters" element="checkout:GetTourResponse"/>>
+    </wsdl:message>
+
+
+    <!-- Port types -->
+
+    <wsdl:portType name="CheckoutWebservices">
+        <wsdl:documentation>Webservice for Checkout.</wsdl:documentation>
+        <wsdl:operation name="GetTour">
+            <wsdl:documentation>Get possible tours</wsdl:documentation>
+            <wsdl:input message="checkout:GetTourRequest"/>
+            <wsdl:output message="checkout:GetTourResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Bindings -->
+
+    <wsdl:binding name="CheckoutWebservice" type="checkout:CheckoutWebservices">
+        <wsdl:documentation>Webservice for Checkout.</wsdl:documentation>
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetTour">
+            <soap:operation soapAction="https://scireum.de/2020/checkout/GetTour"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Service -->
+
+    <wsdl:service name="checkout">
+        <wsdl:documentation>Webservices for checkout</wsdl:documentation>
+        <wsdl:port name="CheckoutWebservice" binding="checkout:CheckoutWebservice">
+            <wsdl:documentation>Webservice providing interaction at Sellsite checkout</wsdl:documentation>
+            <soap:address location="https://to-be-defined.de/services/"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:cus="https://scireum.de/2020/customerData/" xmlns:com="https://scireum.de/2020/common/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <cus:GetCustomerDataResponse>
+            <com:TechnicalMessage/>
+            <cus:isLocked>false</cus:isLocked>
+            <cus:lockedMessage/>
+            <cus:PickupSiteCodes>1</cus:PickupSiteCodes>
+            <cus:PickupSiteCodes>2</cus:PickupSiteCodes>
+            <cus:PickupSiteCodes>3</cus:PickupSiteCodes>
+            <cus:Address>
+                <com:Id>12345</com:Id>
+                <com:Name1>Test</com:Name1>
+                <com:Name2>Account</com:Name2>
+                <com:Name3>GmbH</com:Name3>
+                <com:Street>Test-Straße 1</com:Street>
+                <com:City>Remshalden</com:City>
+                <com:PostCode>73630</com:PostCode>
+                <com:State>DE</com:State>
+                <com:Country>DE</com:Country>
+                <com:Phone>07151 9031610</com:Phone>
+                <com:ContactPerson/>
+                <com:DeliveryComment/>
+                <com:Readonly>false</com:Readonly>
+                <com:BadgeList/>
+            </cus:Address>
+            <cus:CompanyAddressId>12345</cus:CompanyAddressId>
+            <cus:InvoiceAddressId>12345</cus:InvoiceAddressId>
+            <cus:DefaultShippingAddressId>12345</cus:DefaultShippingAddressId>
+            <cus:OpenPurchaseLimit>999999</cus:OpenPurchaseLimit>
+            <cus:TotalPurchaseLimit>999999</cus:TotalPurchaseLimit>
+            <cus:GrantPermission/>
+            <cus:RevokePermission/>
+            <cus:DeliveryArea/>
+        </cus:GetCustomerDataResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

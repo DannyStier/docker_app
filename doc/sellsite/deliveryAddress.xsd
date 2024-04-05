@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<schema xmlns:deliveryAddress="https://scireum.de/2020/deliveryAddress/" xmlns:common="https://scireum.de/2020/common/"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/deliveryAddress/" elementFormDefault="qualified">
+
+    <import namespace="https://scireum.de/2020/common/" schemaLocation="common.xsd"/>
+
+    <annotation>
+        <documentation>Types used in Address management web services.</documentation>
+    </annotation>
+
+    <element name="SetDeliveryAddress">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="DeliveryAddress" type="common:AddressType"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="SetDeliveryAddressResponse">
+        <complexType>
+            <sequence>
+                <element name="DeliveryAddress" type="common:AddressType">
+                    <annotation>
+                        <documentation>The response that must contain the Id field filled. Also BadgeList
+                            might be enhanced by ERP. In most cases it should be considered not to fix invalid
+                            addresses automatically, but to fail and inform the user about the invalid address.
+                        </documentation>
+                    </annotation>
+                </element>
+                <group ref="common:Message"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="DeleteDeliveryAddress">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="AddressId" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="DeleteDeliveryAddressResponse">
+        <complexType>
+            <sequence>
+                <group ref="common:Message"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="CheckDeliveryAddress">
+        <annotation>
+            <documentation>To be used for validation of addresses without storing them.</documentation>
+        </annotation>
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="DeliveryAddress" type="common:PhysicalAddress"/>
+                <element minOccurs="0" name="ContactPerson" type="string"/>
+                <element minOccurs="0" name="Phone" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="CheckDeliveryAddressResponse">
+        <complexType>
+            <sequence>
+                <group ref="common:Message"/>
+            </sequence>
+        </complexType>
+    </element>
+</schema>

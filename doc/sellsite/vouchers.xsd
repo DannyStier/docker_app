@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<schema xmlns:voucher="https://scireum.de/2020/voucher/" xmlns:common="https://scireum.de/2020/common/"
+        xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="https://scireum.de/2020/voucher/"
+        elementFormDefault="qualified">
+
+    <annotation>
+        <documentation>Types used in Voucher web services.</documentation>
+    </annotation>
+
+    <import namespace="https://scireum.de/2020/common/" schemaLocation="common.xsd"/>
+
+    <element name="GetVoucherReferences">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element minOccurs="0" name="VoucherId" type="string"/>
+                <element minOccurs="0" name="OrderId" type="string">
+                    <annotation>
+                        <documentation>For future usage. Currently not supported in sellsite standard.</documentation>
+                    </annotation>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetVoucherReferencesResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element minOccurs="0" name="VoucherReferencesResponse" type="voucher:VoucherReference"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetVoucherList">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element minOccurs="0" name="Type" type="voucher:VoucherTypeEnum">
+                    <annotation>
+                        <documentation>This determines the type of the voucher, e.g. invoice, quote, delivery-note
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="SearchTerm" type="string"/>
+                <element minOccurs="0" name="Commission" type="string"/>
+                <element minOccurs="0" name="CustomerVoucherId" type="string"/>
+                <element minOccurs="0" name="DateFrom" type="date"/>
+                <element minOccurs="0" name="DateTo" type="date"/>
+                <element minOccurs="0" name="Creator" type="string"/>
+                <element minOccurs="0" name="OrderId" type="string"/>
+                <element minOccurs="0" name="Project" type="string"/>
+                <element minOccurs="0" name="ItemNumber" type="string"/>
+                <element name="PageStartIndex" type="int"/>
+                <element name="PageSize" type="int"/>
+                <element name="Sorting" type="voucher:Sorting"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetVoucherListResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element minOccurs="0" name="VoucherCount" type="int"/>
+                <element minOccurs="0" name="PageStartIndex" type="int"/>
+                <element minOccurs="0" name="PageSize" type="int"/>
+                <element maxOccurs="unbounded" minOccurs="0" name="VoucherHeader" type="voucher:VoucherHeader"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetVoucher">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="VoucherId" type="string"/>
+                <element minOccurs="0" name="Type" type="voucher:VoucherTypeEnum"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetVoucherResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element minOccurs="0" name="Voucher" type="voucher:Voucher"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetVoucherPdf">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="VoucherId" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetVoucherPdfResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element minOccurs="0" name="PDF" type="hexBinary"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="ProcessVoucher">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="VoucherId" type="string"/>
+                <element name="ProcessingAction" type="voucher:VoucherActionEnum"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="ProcessVoucherResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element minOccurs="0" name="ProcessNumber" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="CheckVoucherPositionReturn">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="VoucherId" type="string"/>
+                <element name="VoucherPositionId" type="string"/>
+                <element minOccurs="0" name="Reason" type="string">
+                    <annotation>
+                        <documentation>
+                            Optional field holding the reason for the return. Can be configured as mandatory. Value
+                            can be provided by codelist.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element name="Quantity" type="float"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="CheckVoucherPositionReturnResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element name="ReturnableQuantity" type="float">
+                    <annotation>
+                        <documentation>
+                            The quantity that can be returned. If set 0, no return is possible.
+                        </documentation>
+                    </annotation>
+                </element>
+                <group ref="voucher:ReturnConditions"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="CreateReturnOrder">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="ReturnOrderSellsiteId" type="string"/>
+                <element name="TotalAmount" type="common:AmountType"/>
+                <element minOccurs="0" name="ReturnOrderCreator" type="common:Person"/>
+                <element maxOccurs="unbounded" name="ReturnVoucherPosition" type="voucher:ReturnVoucherPosition"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="CreateReturnOrderResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element minOccurs="0" name="ErpId" type="string"/>
+                <group ref="common:Message"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetReturnConditions">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetReturnConditionsResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <group ref="voucher:ReturnConditions"/>
+            </sequence>
+        </complexType>
+    </element>
+    <complexType name="Voucher">
+        <sequence>
+            <element name="VoucherHeader" type="voucher:VoucherHeader"/>
+            <element maxOccurs="unbounded" minOccurs="0" name="VoucherLine" type="voucher:VoucherLine"/>
+        </sequence>
+    </complexType>
+    <complexType name="VoucherHeader">
+        <sequence>
+            <element name="VoucherId" type="string"/>
+            <element minOccurs="0" name="CustomerVoucherId" type="string"/>
+            <element name="Type" type="voucher:VoucherTypeEnum"/>
+            <element name="TypeDescription" type="string"/>
+            <element minOccurs="0" name="Commission" type="string"/>
+            <element minOccurs="0" name="Project" type="string"/>
+            <element name="Date" type="date"/>
+            <element minOccurs="0" name="ValidUntil" type="date"/>
+            <element maxOccurs="unbounded" minOccurs="0" name="Status" type="voucher:Status"/>
+            <element name="Creator" type="string"/>
+            <element minOccurs="0" name="CreatorEmail" type="string"/>
+            <element minOccurs="0" name="CreatorPhone" type="string"/>
+            <element name="TotalNetPrice" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        Excluding VAT, including discounts.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="TotalGrossPrice" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        Including VAT and discounts.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="CanOrder" type="boolean"/>
+            <element minOccurs="0" name="DispatchType" type="string"/>
+            <element minOccurs="0" name="CollectStockId" type="string"/>
+            <element minOccurs="0" name="DeliveryDate" type="date"/>
+            <element minOccurs="0" name="DeliveryArea" type="string"/>
+            <element minOccurs="0" name="DeliveryAddress" type="common:AddressType"/>
+            <element minOccurs="0" name="DeliveryComment" type="string"/>
+            <element minOccurs="0" name="OrderId" type="string"/>
+            <element minOccurs="0" name="OrderType" type="string"/>
+            <element minOccurs="0" name="UserName" type="string"/>
+            <element minOccurs="0" name="IsSupporterOrder" type="boolean"/>
+            <element minOccurs="0" name="OfferDepartment" type="string"/>
+            <element minOccurs="0" name="PdfOnly" type="boolean"/>
+            <element minOccurs="0" name="DueDate" type="date">
+                <annotation>
+                    <documentation>
+                        E.g. for invoices.
+                    </documentation>
+                </annotation>
+            </element>
+            <element maxOccurs="unbounded" minOccurs="0" name="VoucherColumn" type="voucher:VoucherColumn"/>
+            <element maxOccurs="unbounded" minOccurs="0" name="AllowedAction" type="voucher:VoucherActionEnum"/>
+        </sequence>
+    </complexType>
+    <complexType name="VoucherLine">
+        <sequence>
+            <element minOccurs="0" name="PositionNo" type="string"/>
+            <element minOccurs="0" name="PositionId" type="string">
+                <annotation>
+                    <documentation>
+                        Immutable position id that (a) must not change over time, and (b) should contain all information
+                        necessary to identify the containing voucher.
+                    </documentation>
+                </annotation>
+            </element>
+            <element name="PositionType" type="voucher:PositionTypeEnum"/>
+            <element maxOccurs="unbounded" minOccurs="0" name="SubPosition" type="voucher:VoucherLine"/>
+            <element minOccurs="0" name="ItemNumber" type="string"/>
+            <element maxOccurs="unbounded" name="Description" type="string"/>
+            <element minOccurs="0" name="AvailabilitySignal" type="common:StockInfoTypeEnum"/>
+            <element minOccurs="0" name="Quantity" type="float"/>
+            <element minOccurs="0" name="OpenQuantity" type="float">
+                <annotation>
+                    <documentation>
+                        Determines the open quantity of the given voucher position. Sellsite uses the open quantity
+                        to determine if a position can be ordered. Values of zero or below mean no ordering is possible.
+                        The meaning of empty or missing fields can be controlled by configuration.
+                        Also, it can be displayed to the user.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="PositionReturnConditions" type="voucher:PositionReturnConditions">
+                <annotation>
+                    <documentation>
+                        Information about the returnability of a voucher position.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="OrderStep" type="float"/>
+            <element minOccurs="0" name="Unit" type="string"/>
+            <element minOccurs="0" name="NetPricePerUnit" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        The price per price unit, excluding VAT, including discounts.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="NetPrice" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        The price for the whole position, excluding VAT, including discounts.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="GrossPricePerUnit" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        The price per price unit, including VAT and discounts.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="GrossPrice" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        The price for the whole position, including VAT and discounts.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="DesiredDeliveryDate" type="date"/>
+            <element maxOccurs="unbounded" minOccurs="0" name="Status" type="voucher:Status"/>
+            <element minOccurs="0" name="CanOrder" type="boolean">
+                <annotation>
+                    <documentation>
+                        Optional field to mark voucher positions as not orderable. Defaults to true.
+                        Use case examples:
+                        For a set of components, only the set main position shall be orderable, but not the
+                        set component positions. Or an article is permanently removed from the range.
+                    </documentation>
+                </annotation>
+            </element>
+            <element maxOccurs="unbounded" minOccurs="0" name="VoucherColumn" type="voucher:VoucherColumn"/>
+        </sequence>
+    </complexType>
+    <complexType name="Status">
+        <sequence>
+            <element name="Info" type="string"/>
+            <element minOccurs="0" name="Description" type="string"/>
+            <element minOccurs="0" name="Date" type="date"/>
+            <element minOccurs="0" name="CSS" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="VoucherReference">
+        <sequence>
+            <element name="Voucher" type="voucher:VoucherHeader"/>
+            <element maxOccurs="unbounded" minOccurs="0" name="Predecessor" type="voucher:VoucherReference"/>
+            <element maxOccurs="unbounded" minOccurs="0" name="Successor" type="voucher:VoucherReference"/>
+        </sequence>
+    </complexType>
+    <complexType name="VoucherColumn">
+        <sequence>
+            <element name="Id" type="int"/>
+            <element name="Name" type="string"/>
+            <element name="Value" type="string"/>
+            <element name="DataType" type="voucher:VoucherColumnTypeEnum"/>
+        </sequence>
+    </complexType>
+    <simpleType name="PositionTypeEnum">
+        <restriction base="string">
+            <enumeration value="ITEM"/>
+            <enumeration value="TEXT"/>
+            <enumeration value="SUM"/>
+            <enumeration value="OPTIONAL"/>
+            <enumeration value="ALTERNATIVE"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="VoucherActionEnum">
+        <restriction base="string">
+            <enumeration value="Cancel">
+                <annotation>
+                    <documentation>
+                        Allows the cancellation of a voucher. E.g. if a quote will not be ordered by customer.
+                    </documentation>
+                </annotation>
+            </enumeration>
+        </restriction>
+    </simpleType>
+    <simpleType name="VoucherTypeEnum">
+        <restriction base="string">
+            <enumeration value="order"/>
+            <enumeration value="quote"/>
+            <enumeration value="invoice"/>
+            <enumeration value="delivery-note"/>
+            <enumeration value="credit-note"/>
+            <enumeration value="open-post"/>
+            <enumeration value="call-order"/>
+            <enumeration value="retour"/>
+            <enumeration value="request">
+                <annotation>
+                    <documentation>
+                        Note: Requests from Sellsite are already in Sellsite ordercenter.
+                    </documentation>
+                </annotation>
+            </enumeration>
+        </restriction>
+    </simpleType>
+    <complexType name="Sorting">
+        <sequence>
+            <element name="Criteria" type="voucher:CriteriaEnum"/>
+            <element name="Direction" type="boolean">
+                <annotation>
+                    <documentation>
+                        1 for asc, 0 for desc
+                    </documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+    <simpleType name="CriteriaEnum">
+        <restriction base="string">
+            <enumeration value="COMMISSION"/>
+            <enumeration value="VOUCHER_NO"/>
+            <enumeration value="CUSTOMER_VOUCHER_ID"/>
+            <enumeration value="DATE"/>
+            <enumeration value="CREATOR"/>
+            <enumeration value="STATE"/>
+            <enumeration value="SUM"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="VoucherColumnTypeEnum">
+        <restriction base="string">
+            <enumeration value="string"/>
+            <enumeration value="date"/>
+            <enumeration value="time"/>
+            <enumeration value="integer"/>
+            <enumeration value="decimal"/>
+            <enumeration value="boolean"/>
+        </restriction>
+    </simpleType>
+    <complexType name="ReturnVoucherPosition">
+        <sequence>
+            <element name="VoucherId" type="string"/>
+            <element name="VoucherPositionId" type="string"/>
+            <element name="ItemNumber" type="string"/>
+            <element name="Quantity" type="float"/>
+            <element name="Reason" type="string"/>
+        </sequence>
+    </complexType>
+    <group name="ReturnConditions">
+        <sequence>
+            <element minOccurs="0" name="ReturnFee" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        The cost for returning items.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="MinimalAmount" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        The minimal amount of a return order.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="MaximalAmount" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        The maximal amount of a return order.
+                    </documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </group>
+    <complexType name="PositionReturnConditions">
+        <sequence>
+            <element name="ReturnableQuantity" type="float">
+                <annotation>
+                    <documentation>
+                        This field determines how much of the quantity can be returned within a return order.
+                        Use this e.g. at delivery notes, if the user can return positions of that delivery.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" maxOccurs="unbounded" name="Reason" type="string"/>
+        </sequence>
+    </complexType>
+</schema>

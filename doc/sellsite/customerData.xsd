@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<schema xmlns:customerData="https://scireum.de/2020/customerData/" xmlns:common="https://scireum.de/2020/common/"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/customerData/" elementFormDefault="qualified">
+
+    <annotation>
+        <documentation>Types used in customer base data web services.</documentation>
+    </annotation>
+
+    <import namespace="https://scireum.de/2020/common/" schemaLocation="common.xsd"/>
+
+    <element name="GetCustomerData">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetCustomerDataResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element name="isLocked" type="boolean">
+                    <annotation>
+                        <documentation>
+                            A locked customer is not allowed to use the Sellsite shop.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="lockedMessage" type="string">
+                    <annotation>
+                        <documentation>
+                            An optional message that will be displayed to buyers.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" maxOccurs="unbounded" name="PickupSiteCodes" type="string">
+                    <annotation>
+                        <documentation>
+                            A list of sites the user is presented to pickup from. The first one is
+                            used as default. If none is given, all available sites are used.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element maxOccurs="unbounded" name="Address" type="common:AddressType"/>
+                <element name="CompanyAddressId" type="string">
+                    <annotation>
+                        <documentation>
+                            The default address of the customer.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="InvoiceAddressId" type="string">
+                    <annotation>
+                        <documentation>
+                            The optional address for invoices.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="DefaultShippingAddressId" type="string">
+                    <annotation>
+                        <documentation>
+                            The optional default address for shipping.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element name="OpenPurchaseLimit" type="common:AmountType">
+                    <annotation>
+                        <documentation>
+                            The open limit for the customer. The next order's sum must not be over the limit.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="TotalPurchaseLimit" type="common:AmountType">
+                    <annotation>
+                        <documentation>
+                            The total limit for the customer. Might be higher than the open limit in case payments
+                            are in process. It can be used to inform the user, the open limit is used for actual
+                            checks at Sellsite.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" maxOccurs="unbounded" name="GrantPermission" type="string">
+                    <annotation>
+                        <documentation>
+                            Assigns a permission to this customer.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" maxOccurs="unbounded" name="RevokePermission" type="string">
+                    <annotation>
+                        <documentation>
+                            Revokes a permission from this customer.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="DeliveryArea" type="string">
+                    <annotation>
+                        <documentation>
+                            An optional identifier of a delivery area. Use case is when e.g. tour calculations do not
+                            work with addresses but with this area.
+                        </documentation>
+                    </annotation>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="GetLimit">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetLimitResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element name="OpenPurchaseLimit" type="common:AmountType">
+                    <annotation>
+                        <documentation>
+                            The open limit for the customer. The next order's sum must not be over the limit. If the
+                            node is missing or empty, no limit is set.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="TotalPurchaseLimit" type="common:AmountType">
+                    <annotation>
+                        <documentation>
+                            The total limit for the customer. Might be higher than the open limit in case payments
+                            are in process. It can be used to inform the user, the open limit is used for actual
+                            checks at Sellsite.
+                        </documentation>
+                    </annotation>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+
+</schema>

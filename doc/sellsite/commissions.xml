@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+
+<wsdl:definitions
+        xmlns:commissions="https://scireum.de/2020/commissions/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/commissions/">
+    <wsdl:documentation>Webservice for Commissions.</wsdl:documentation>
+
+    <!-- Types from external XSD -->
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="https://scireum.de/2020/commissions/" schemaLocation="commissions.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+
+    <wsdl:message name="GetCommissionsRequest">
+        <wsdl:part name="parameters" element="commissions:GetCommissions"/>
+    </wsdl:message>
+    <wsdl:message name="GetCommissionsResponse">
+        <wsdl:part name="parameters" element="commissions:GetCommissionsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetCommissionRequest">
+        <wsdl:part name="parameters" element="commissions:SetCommission"/>
+    </wsdl:message>
+    <wsdl:message name="SetCommissionResponse">
+        <wsdl:part name="parameters" element="commissions:SetCommissionResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteCommissionRequest">
+        <wsdl:part name="parameters" element="commissions:DeleteCommission"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteCommissionResponse">
+        <wsdl:part name="parameters" element="commissions:DeleteCommissionResponse"/>
+    </wsdl:message>
+
+    <!-- Port types -->
+
+    <wsdl:portType name="CommissionsWebservices">
+        <wsdl:documentation>Webservice for Commissions.</wsdl:documentation>
+
+        <wsdl:operation name="GetCommissions">
+            <wsdl:input message="commissions:GetCommissionsRequest"/>
+            <wsdl:output message="commissions:GetCommissionsResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetCommission">
+            <wsdl:input message="commissions:SetCommissionRequest"/>
+            <wsdl:output message="commissions:SetCommissionResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteCommission">
+            <wsdl:input message="commissions:DeleteCommissionRequest"/>
+            <wsdl:output message="commissions:DeleteCommissionResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Bindings -->
+
+    <wsdl:binding name="CommissionsWebservice" type="commissions:CommissionsWebservices">
+        <wsdl:documentation>Webservice for Commissions.</wsdl:documentation>
+
+        <wsdl:operation name="GetCommissions">
+            <soap:operation soapAction="https://scireum.de/2020/commissions/GetCommissions" style="document"/>
+            <wsdl:input name="GetCommissionsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="GetCommissionsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetCommission">
+            <soap:operation soapAction="https://scireum.de/2020/commissions/SetCommission" style="document"/>
+            <wsdl:input name="SetCommissionRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="SetCommissionResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteCommission">
+            <soap:operation soapAction="https://scireum.de/2020/commissions/DeleteCommission" style="document"/>
+            <wsdl:input name="DeleteCommissionRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="DeleteCommissionResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Service -->
+
+    <wsdl:service name="Commissions">
+        <wsdl:documentation>Webservice for Commissions</wsdl:documentation>
+        <wsdl:port name="VoucherWebservice" binding="commissions:CommissionsWebservice">
+            <wsdl:documentation>Webservice providing interaction with commissions for Sellsite</wsdl:documentation>
+            <soap:address location="https://to-be-defined.de/services/"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

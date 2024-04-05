@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<schema xmlns:commissions="https://scireum.de/2020/commissions/" xmlns:common="https://scireum.de/2020/common/"
+        xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="https://scireum.de/2020/commissions/"
+        elementFormDefault="qualified">
+
+    <annotation>
+        <documentation>Types used in Commission web services.</documentation>
+    </annotation>
+
+    <import namespace="https://scireum.de/2020/common/" schemaLocation="common.xsd"/>
+
+    <element name="GetCommissions">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetCommissionsResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <group minOccurs="0" ref="common:Message"/>
+                <element minOccurs="0" name="Commission" type="commissions:Commission"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="SetCommission">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="Name" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="SetCommissionResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <group minOccurs="0" ref="common:Message"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="DeleteCommission">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element name="Name" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="DeleteCommissionResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <group minOccurs="0" ref="common:Message"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="Commission">
+        <sequence>
+            <element minOccurs="0" name="Name" type="string"/>
+            <element name="CreationDate" type="date"/>
+            <element name="UsageDate" type="date"/>
+            <element name="UsageAmount" type="int"/>
+        </sequence>
+    </complexType>
+</schema>

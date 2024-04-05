@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:cus="https://scireum.de/2020/customerData/" xmlns:com="https://scireum.de/2020/common/"
+                  xmlns:vouc="https://scireum.de/2020/voucher/" xmlns:deli="https://scireum.de/2020/deliveryAddress/"
+                  xmlns:pa="https://scireum.de/2020/priceAndAvailability/"
+                  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:commi="https://scireum.de/2020/commissions/" xmlns:check="https://scireum.de/2020/checkout/"
+                  xmlns:ugl="https://scireum.de/2020/ugl/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <pa:GetPriceAndAvailability>
+            <com:SharedSecret>shared secret for the request authentication</com:SharedSecret>
+            <com:Language>de</com:Language>
+            <com:CustomerNumber>12345</com:CustomerNumber>
+            <com:UserId>test@scireum.de</com:UserId>
+            <!--Optional-->
+            <pa:PickupSiteCode>Standort-1</pa:PickupSiteCode>
+            <!--One or more positions-->
+            <pa:Position>
+                <pa:PositionId>0</pa:PositionId>
+                <pa:ItemNumber>99999</pa:ItemNumber>
+                <pa:Quantity>1</pa:Quantity>
+                <!--Optional-->
+                <pa:TotalQuantity></pa:TotalQuantity>
+            </pa:Position>
+            <!--Optional-->
+            <pa:DeliveryAddress>
+                <com:Street>Test-Straße 1</com:Street>
+                <com:City>Remshalden</com:City>
+                <com:ZipCode>73630</com:ZipCode>
+                <com:Country>DE</com:Country>
+            </pa:DeliveryAddress>
+            <!--Optional-->
+            <pa:ShippingMethod>Lieferung</pa:ShippingMethod>
+            <!--Optional-->
+            <pa:OrderType>order</pa:OrderType>
+            <!--Optional-->
+            <pa:Project/>
+            <!--Optional-->
+            <pa:TourId/>
+            <!--Optional-->
+            <pa:Currency/>
+        </pa:GetPriceAndAvailability>
+    </soapenv:Body>
+</soapenv:Envelope>

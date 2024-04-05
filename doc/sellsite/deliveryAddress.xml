@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<wsdl:definitions
+        xmlns:deliveryAddress="https://scireum.de/2020/deliveryAddress/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/deliveryAddress/">
+
+
+    <!-- Types from external XSD -->
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="https://scireum.de/2020/deliveryAddress/" schemaLocation="deliveryAddress.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+    <wsdl:message name="SetDeliveryAddressRequest">
+        <wsdl:part name="parameters" element="deliveryAddress:SetDeliveryAddress"/>
+    </wsdl:message>
+    <wsdl:message name="SetDeliveryAddressResponse">
+        <wsdl:part name="parameters" element="deliveryAddress:SetDeliveryAddressResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDeliveryAddressRequest">
+        <wsdl:part name="parameters" element="deliveryAddress:DeleteDeliveryAddress"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteDeliveryAddressResponse">
+        <wsdl:part name="parameters" element="deliveryAddress:DeleteDeliveryAddressResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CheckDeliveryAddressRequest">
+        <wsdl:part name="parameters" element="deliveryAddress:CheckDeliveryAddress"/>
+    </wsdl:message>
+    <wsdl:message name="CheckDeliveryAddressResponse">
+        <wsdl:part name="parameters" element="deliveryAddress:CheckDeliveryAddressResponse"/>
+    </wsdl:message>
+
+
+    <!-- Port types -->
+    <wsdl:portType name="DeliveryAddressWebservices">
+        <wsdl:operation name="SetDeliveryAddress">
+            <wsdl:input message="deliveryAddress:SetDeliveryAddressRequest"/>
+            <wsdl:output message="deliveryAddress:SetDeliveryAddressResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDeliveryAddress">
+            <wsdl:input message="deliveryAddress:DeleteDeliveryAddressRequest"/>
+            <wsdl:output message="deliveryAddress:DeleteDeliveryAddressResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="CheckDeliveryAddress">
+            <wsdl:input message="deliveryAddress:CheckDeliveryAddressRequest"/>
+            <wsdl:output message="deliveryAddress:CheckDeliveryAddressResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Bindings -->
+    <wsdl:binding name="DeliveryAddressWebservice" type="deliveryAddress:DeliveryAddressWebservices">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="SetDeliveryAddress">
+            <soap:operation soapAction="https://scireum.de/2020/deliveryAddress/SetDeliveryAddress"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeleteDeliveryAddress">
+            <soap:operation soapAction="https://scireum.de/2020/deliveryAddress/DeleteDeliveryAddress"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckDeliveryAddress">
+            <soap:operation soapAction="https://scireum.de/2020/deliveryAddress/CheckDeliveryAddress"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Services -->
+    <wsdl:service name="deliveryAddress">
+        <wsdl:port name="DeliveryAddressWebservice" binding="deliveryAddress:DeliveryAddressWebservice">
+            <soap:address location="https://to-be-defined.de/services/"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<schema xmlns:common="https://scireum.de/2020/common/" xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/common/" elementFormDefault="qualified">
+
+    <annotation>
+        <documentation>Common types used in Sellsite web services.</documentation>
+    </annotation>
+
+    <group name="CommonRequestFields">
+        <sequence>
+            <element name="SharedSecret" type="string">
+                <annotation>
+                    <documentation>A shared secret used for authentication.</documentation>
+                </annotation>
+            </element>
+            <element name="Language" type="string"/>
+            <element name="CustomerNumber" type="string"/>
+            <element name="UserId" type="string" minOccurs="0"/>
+        </sequence>
+    </group>
+
+    <group name="Message">
+        <sequence>
+            <element minOccurs="0" name="Message" type="string"/>
+            <element minOccurs="0" name="MessageId" type="string"/>
+            <element minOccurs="0" name="MessageType" type="common:MessageTypeEnum"/>
+        </sequence>
+    </group>
+
+    <element name="TechnicalMessage" type="string">
+        <annotation>
+            <documentation>
+                Technical message that should be logged. This message should not contain user error messages. The
+                processing of the request/response should continue regardless of the message. If an error occurs, use a
+                SOAP Fault instead.
+            </documentation>
+        </annotation>
+    </element>
+
+    <simpleType name="AmountType">
+        <restriction base="decimal">
+            <fractionDigits value="2"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="MessageTypeEnum">
+        <restriction base="string">
+            <enumeration value="SUCCESS"/>
+            <enumeration value="INFO"/>
+            <enumeration value="WARNING"/>
+            <enumeration value="PROBLEM"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="AddressType">
+        <sequence>
+            <element name="Id" type="string"/>
+            <element name="Name1" type="string"/>
+            <element minOccurs="0" name="Name2" type="string"/>
+            <element minOccurs="0" name="Name3" type="string"/>
+            <element minOccurs="0" name="Street" type="string"/>
+            <element name="City" type="string"/>
+            <element name="PostCode" type="string">
+                <annotation>
+                    <documentation>Note: Mind the difference to ZipCode at PhysicalAddress. This might be fixed
+                        in future version of the interface.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="State" type="string"/>
+            <element name="Country" type="string"/>
+            <element minOccurs="0" name="Phone" type="string"/>
+            <element minOccurs="0" name="PhoneNotification" type="boolean">
+                <annotation>
+                    <documentation>Should the phone number be used for notifications about deliveries.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="ContactPerson" type="string"/>
+            <element minOccurs="0" name="DeliveryComment" type="string"/>
+            <element minOccurs="0" name="GpsLat" type="float"/>
+            <element minOccurs="0" name="GpsLong" type="float"/>
+            <element minOccurs="0" name="Readonly" type="boolean"/>
+            <element minOccurs="0" name="BadgeList" type="common:BadgeList"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Badge">
+        <sequence>
+            <element name="Label" type="string"/>
+            <element name="CSS" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="BadgeList">
+        <sequence>
+            <element maxOccurs="unbounded" name="Badge" type="common:Badge"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Person">
+        <sequence>
+            <element name="LastName" type="string"/>
+            <element name="FirstName" type="string"/>
+            <element minOccurs="0" name="Phone" type="string"/>
+            <element minOccurs="0" name="Email" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="PhysicalAddress">
+        <sequence>
+            <element minOccurs="0" name="Street" type="string"/>
+            <element name="City" type="string"/>
+            <element name="ZipCode" type="string">
+                <annotation>
+                    <documentation>Note: Mind the difference to PostCode at AddressType. This might be fixed
+                        in future version of the interface.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="Country" type="string"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="StockInfoTypeEnum">
+        <restriction base="string">
+            <enumeration value="UNKNOWN">
+                <annotation>
+                    <documentation>No infos about the stock.
+                    </documentation>
+                </annotation>
+            </enumeration>
+            <enumeration value="IN_STOCK">
+                <annotation>
+                    <documentation>
+                        Enough - whatever that means to the customer - is in stock.
+                    </documentation>
+                </annotation>
+            </enumeration>
+            <enumeration value="LOW_STOCK">
+                <annotation>
+                    <documentation>
+                        The item might be out of stock soon.
+                    </documentation>
+                </annotation>
+            </enumeration>
+            <enumeration value="OUT_OF_STOCK">
+                <annotation>
+                    <documentation>
+                        Empty stock for this item.
+                    </documentation>
+                </annotation>
+            </enumeration>
+            <enumeration value="REORDERED">
+                <annotation>
+                    <documentation>
+                        Currently out of stock, but a new shipment is on its way.
+                    </documentation>
+                </annotation>
+            </enumeration>
+        </restriction>
+    </simpleType>
+</schema>

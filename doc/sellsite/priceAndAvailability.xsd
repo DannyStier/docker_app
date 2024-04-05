@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<schema xmlns:priceAndAvailability="https://scireum.de/2020/priceAndAvailability/"
+        xmlns:common="https://scireum.de/2020/common/"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/priceAndAvailability/" elementFormDefault="qualified">
+
+    <annotation>
+        <documentation>Types used in product price and availability web services.</documentation>
+    </annotation>
+
+    <import namespace="https://scireum.de/2020/common/" schemaLocation="common.xsd"/>
+
+    <element name="GetPriceAndAvailability">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element maxOccurs="unbounded" minOccurs="0" name="PickupSiteCode" type="string">
+                    <annotation>
+                        <documentation>The site code(s), to request availabilities for.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element maxOccurs="unbounded" name="Position" type="priceAndAvailability:PositionType">
+                    <annotation>
+                        <documentation>A position can either be an item or a voucher or a voucher position.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="DeliveryAddress" type="common:PhysicalAddress">
+                    <annotation>
+                        <documentation>The address, to request shipping availability for.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="DeliveryArea" type="string">
+                    <annotation>
+                        <documentation>
+                            An optional identifier of a delivery area. Use case is when e.g. tour calculations do not
+                            work with addresses but with this area.
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="DeliveryDate" type="date">
+                    <annotation>
+                        <documentation>An optional delivery date from the basket.</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="ShippingMethod" type="string">
+                    <annotation>
+                        <documentation>Optional the shipping method, for example "delivery" or "pickup".
+                        </documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="OrderType" type="string">
+                    <annotation>
+                        <documentation>Optional the order type, for example "order" or "quote".</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="Project" type="string">
+                    <annotation>
+                        <documentation>An optional project the item is needed for.</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="TourId" type="string">
+                    <annotation>
+                        <documentation>An optional TourId, used in tour calculation.</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="Currency" type="string">
+                    <annotation>
+                        <documentation>For future usage.</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="Filter" type="priceAndAvailability:RequestFilter">
+                    <annotation>
+                        <documentation>
+                            Can be used to optionally filter the details requested from ERP. E.g. only prices or only
+                            availabilities might be requested. Might speed up the response from ERP.
+                        </documentation>
+                    </annotation>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="GetPriceAndAvailabilityResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element maxOccurs="unbounded" minOccurs="0" name="PositionResponse"
+                         type="priceAndAvailability:PositionResponseType"/>
+                <group ref="common:Message"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="PositionType">
+        <sequence>
+            <element name="PositionId" type="int">
+                <annotation>
+                    <documentation>The position identifier to correspond in request and response.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="ItemNumber" type="string">
+                <annotation>
+                    <documentation>The item to calculate the price for. One of 'ItemNumber' or 'VoucherId' must be set
+                        for a meaningful request.
+                        Note: We do not use xsd:choice here as some tools have issues in handling it.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="VoucherId" type="string">
+                <annotation>
+                    <documentation>The voucher to calculate the price for.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="VoucherPositionId" type="string">
+                <annotation>
+                    <documentation>A position from the voucher to calculate the price for. In case the
+                        VoucherPositionId is a unique identifier, the ERP might ignore the VoucherId.
+                    </documentation>
+                </annotation>
+            </element>
+            <element name="Quantity" type="float">
+                <annotation>
+                    <documentation>The quantity of the requested item.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="TotalQuantity" type="float">
+                <annotation>
+                    <documentation>
+                        The sum of the quantities of all basket positions of this article or voucher position.
+                        This is important for price scales and stock availability.
+                        In case Sellsite aggregates basket positions, this field is not set.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="SellingPrice" type="common:AmountType">
+                <annotation>
+                    <documentation>
+                        In case the selling price was predetermined by another system this selling price might
+                        be used to calculate prices at ERP.
+                        This is also known as 'Verkaufspreis'.
+                        Might be provided together with field 'SalesDiscountGroup'
+                        Use case: To calculate prices of items with price information from DataHive.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="SalesDiscountGroup" type="string">
+                <annotation>
+                    <documentation>
+                        In case the selling price was predetermined by another system the sales discount group
+                        might be used to calculate prices at ERP.
+                        This is also known as 'Verkaufsrabattgruppe'.
+                        Might be provided together with field 'SellingPrice'
+                        Use case: To calculate prices of items with price information from DataHive.
+                    </documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+
+    <complexType name="PositionResponseType">
+        <sequence>
+            <element name="PositionId" type="int"/>
+            <element minOccurs="0" name="ItemNumber" type="string">
+                <annotation>
+                    <documentation>Optional item number as response to a voucher position request.</documentation>
+                </annotation>
+            </element>
+            <element name="Quantity" type="float">
+                <annotation>
+                    <documentation>The quantity of the position requested for.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="CorrectedQuantity" type="float">
+                <annotation>
+                    <documentation>An optional corrected quantity, if for example the request is sent for 4 items, but
+                        only 3 are available. So e.g. and error would show up in shop and the user will be asked to
+                        change the quantity to this corrected value.
+                    </documentation>
+                </annotation>
+            </element>
+            <element maxOccurs="unbounded" minOccurs="0" name="NetPriceScale" type="priceAndAvailability:PriceScale">
+                <annotation>
+                    <documentation>Net price scales</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="PriceUnit" type="string">
+                <annotation>
+                    <documentation>The price unit for which the netPrice is given, e.g. STK.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="NetPrice" type="common:AmountType">
+                <annotation>
+                    <documentation>Net price per requested quantity without VAT. This gets used for the
+                        actual net price of positions in basket and at orders, and for displaying prices at products.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="NetPriceDiscount" type="common:AmountType">
+                <annotation>
+                    <documentation>An absolute net discount per requested quantity to be subtracted by Sellsite.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="GrossPrice" type="common:AmountType">
+                <annotation>
+                    <documentation>List price per requested quantity without VAT. Note: Unfortunately naming isn't
+                        consistent with voucher gross prices.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="NetPricePerUnit" type="common:AmountType">
+                <annotation>
+                    <documentation>Net price per price unit without VAT.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="GrossPricePerUnit" type="common:AmountType">
+                <annotation>
+                    <documentation>List price per price unit without VAT. Note: Unfortunately naming isn't
+                        consistent with voucher gross prices.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="Currency" type="string">
+                <annotation>
+                    <documentation>For future usage.</documentation>
+                </annotation>
+            </element>
+            <element maxOccurs="unbounded" minOccurs="0" name="PackingUnit" type="priceAndAvailability:PackingUnit">
+                <annotation>
+                    <documentation>Zero or more PackagingUnits, e.g. a package or a pallet of items.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="StockUnit" type="string">
+                <annotation>
+                    <documentation>The unit used in stock.
+                        Hint: Currently unused. Candidate for removal in future versions.
+                    </documentation>
+                </annotation>
+            </element>
+            <element maxOccurs="unbounded" minOccurs="0" name="Stock" type="priceAndAvailability:Stock">
+                <annotation>
+                    <documentation>Optional response for which site which availability exists.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="BadgeList" type="priceAndAvailability:BadgeList">
+                <annotation>
+                    <documentation>A list of badges</documentation>
+                </annotation>
+            </element>
+            <group ref="common:Message"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Stock">
+        <sequence>
+            <element name="Id" type="string">
+                <annotation>
+                    <documentation>Should contain and match the in-shop configured site codes.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="AvailabilitySignal" type="common:StockInfoTypeEnum"/>
+            <element minOccurs="0" name="StockType" type="priceAndAvailability:StockTypeEnum"/>
+            <element minOccurs="0" name="QuantityOnHand" type="float"/>
+            <element minOccurs="0" name="AvailabilityDate" type="date"/>
+            <group ref="common:Message"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="StockTypeEnum">
+        <restriction base="string">
+            <enumeration value="PICKUP"/>
+            <enumeration value="DELIVERY"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="PackingUnit">
+        <sequence>
+            <element name="Id" type="string"/>
+            <element name="Name" type="string"/>
+            <element name="Quantity" type="float"/>
+            <element minOccurs="0" name="PricePerUnit" type="common:AmountType"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="PriceScale">
+        <sequence>
+            <element name="ValueCondition" type="float">
+            </element>
+            <element name="Price" type="common:AmountType">
+            </element>
+            <element name="PriceScaleCondition" type="priceAndAvailability:PriceScaleCondition"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="PriceScaleCondition">
+        <restriction base="string">
+            <enumeration value="LOWER_LIMIT">
+                <annotation>
+                    <documentation>Price scale applies if at least this amount limit is reached.</documentation>
+                </annotation>
+            </enumeration>
+            <enumeration value="MODULO">
+                <annotation>
+                    <documentation>Price scale applies if a modulo by this scales amount returns 0.</documentation>
+                </annotation>
+            </enumeration>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Badge">
+        <annotation>
+            <documentation>Deprecated. Please use common:Badge instead.
+            </documentation>
+        </annotation>
+        <sequence>
+            <element name="Label" type="string"/>
+            <element name="CSS" type="string"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="BadgeList">
+        <annotation>
+            <documentation>Deprecated. Please use common:BadgeList instead.
+            </documentation>
+        </annotation>
+        <sequence>
+            <element maxOccurs="unbounded" name="Badge" type="priceAndAvailability:Badge"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="RequestFilter">
+        <restriction base="string">
+            <enumeration value="ONLY_PRICE"/>
+            <enumeration value="ONLY_AVAILABILITY"/>
+        </restriction>
+    </simpleType>
+
+</schema>

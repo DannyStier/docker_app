@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+
+<wsdl:definitions
+        xmlns:voucher="https://scireum.de/2020/voucher/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/voucher/">
+    <wsdl:documentation>Webservice for Vouchers.</wsdl:documentation>
+
+    <!-- Types from external XSD -->
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="https://scireum.de/2020/voucher/" schemaLocation="vouchers.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+
+    <wsdl:message name="GetVoucherReferencesRequest">
+        <wsdl:part name="parameters" element="voucher:GetVoucherReferences"/>>
+    </wsdl:message>
+    <wsdl:message name="GetVoucherReferencesResponse">
+        <wsdl:part name="parameters" element="voucher:GetVoucherReferencesResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="GetVoucherListRequest">
+        <wsdl:part name="parameters" element="voucher:GetVoucherList"/>>
+    </wsdl:message>
+    <wsdl:message name="GetVoucherListResponse">
+        <wsdl:part name="parameters" element="voucher:GetVoucherListResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="GetVoucherRequest">
+        <wsdl:part name="parameters" element="voucher:GetVoucher"/>>
+    </wsdl:message>
+    <wsdl:message name="GetVoucherResponse">
+        <wsdl:part name="parameters" element="voucher:GetVoucherResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="GetVoucherPdfRequest">
+        <wsdl:part name="parameters" element="voucher:GetVoucherPdf"/>>
+    </wsdl:message>
+    <wsdl:message name="GetVoucherPdfResponse">
+        <wsdl:part name="parameters" element="voucher:GetVoucherPdfResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="ProcessVoucherRequest">
+        <wsdl:part name="parameters" element="voucher:ProcessVoucher"/>>
+    </wsdl:message>
+    <wsdl:message name="ProcessVoucherResponse">
+        <wsdl:part name="parameters" element="voucher:ProcessVoucherResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="CheckVoucherPositionReturnRequest">
+        <wsdl:part name="parameters" element="voucher:CheckVoucherPositionReturn"/>>
+    </wsdl:message>
+    <wsdl:message name="CheckVoucherPositionReturnResponse">
+        <wsdl:part name="parameters" element="voucher:CheckVoucherPositionReturnResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="CreateReturnOrderRequest">
+        <wsdl:part name="parameters" element="voucher:CreateReturnOrder"/>>
+    </wsdl:message>
+    <wsdl:message name="CreateReturnOrderResponse">
+        <wsdl:part name="parameters" element="voucher:CreateReturnOrderResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="GetReturnConditionsRequest">
+        <wsdl:part name="parameters" element="voucher:GetReturnConditions"/>>
+    </wsdl:message>
+    <wsdl:message name="GetReturnConditionsResponse">
+        <wsdl:part name="parameters" element="voucher:GetReturnConditionsResponse"/>>
+    </wsdl:message>
+
+    <!-- Port types -->
+
+    <wsdl:portType name="VoucherWebservices">
+        <wsdl:documentation>Webservice for Vouchers.</wsdl:documentation>
+        <wsdl:operation name="GetVoucherReferences">
+            <wsdl:documentation>Get referenced vouchers by given voucher id</wsdl:documentation>
+            <wsdl:input message="voucher:GetVoucherReferencesRequest"/>
+            <wsdl:output message="voucher:GetVoucherReferencesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetVoucherList">
+            <wsdl:documentation>Query customer vouchers</wsdl:documentation>
+            <wsdl:input message="voucher:GetVoucherListRequest"/>
+            <wsdl:output message="voucher:GetVoucherListResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetVoucher">
+            <wsdl:documentation>Retrieve details on single customer voucher</wsdl:documentation>
+            <wsdl:input message="voucher:GetVoucherRequest"/>
+            <wsdl:output message="voucher:GetVoucherResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetVoucherPdf">
+            <wsdl:documentation>Retrieve printable customer voucher</wsdl:documentation>
+            <wsdl:input message="voucher:GetVoucherPdfRequest"/>
+            <wsdl:output message="voucher:GetVoucherPdfResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessVoucher">
+            <wsdl:documentation>Processing operations on customer vouchers</wsdl:documentation>
+            <wsdl:input message="voucher:ProcessVoucherRequest"/>
+            <wsdl:output message="voucher:ProcessVoucherResponse"/>
+        </wsdl:operation>
+        <wsdl:documentation>
+            Note about returning positions from voucher. We support two flavors.
+            1. Checking each position's returnability from the voucher detail page using operation
+            'CheckVoucherPositionReturn'. This uses predetermined return reasons, e.g. from a codelist.
+            2. Getting the returnability from withing the initial voucher response. This can be handled more user
+            friendly at Sellsite and requires the implementation of operation 'GetReturnConditions'.
+        </wsdl:documentation>
+        <wsdl:operation name="CheckVoucherPositionReturn">
+            <wsdl:documentation>Checks if a voucher position can be returned. This is only required in flavor 1.
+            </wsdl:documentation>
+            <wsdl:input message="voucher:CheckVoucherPositionReturnRequest"/>
+            <wsdl:output message="voucher:CheckVoucherPositionReturnResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateReturnOrder">
+            <wsdl:documentation>Transmits a Sellsite return order to ERP</wsdl:documentation>
+            <wsdl:input message="voucher:CreateReturnOrderRequest"/>
+            <wsdl:output message="voucher:CreateReturnOrderResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetReturnConditions">
+            <wsdl:documentation>Loads general conditions for returning positions from vouchers.
+                This is only required in flavor 2.
+            </wsdl:documentation>
+            <wsdl:input message="voucher:GetReturnConditionsRequest"/>
+            <wsdl:output message="voucher:GetReturnConditionsResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Bindings -->
+
+    <wsdl:binding name="VoucherWebservice" type="voucher:VoucherWebservices">
+        <wsdl:documentation>Webservice for Vouchers.</wsdl:documentation>
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetVoucherReferences">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/GetVoucherReferences"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetVoucherList">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/GetVoucherList"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetVoucher">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/GetVoucher"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetVoucherPdf">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/GetVoucherPdf"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ProcessVoucher">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/ProcessVoucher"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckVoucherPositionReturn">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/CheckVoucherPositionReturn"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateReturnOrder">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/CreateReturnOrder"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetReturnConditions">
+            <soap:operation soapAction="https://scireum.de/2020/voucher/GetReturnConditions"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Service -->
+
+    <wsdl:service name="voucher">
+        <wsdl:documentation>Webservice for Vouchers</wsdl:documentation>
+        <wsdl:port name="VoucherWebservice" binding="voucher:VoucherWebservice">
+            <wsdl:documentation>Webservice providing interaction with vouchers for Sellsite</wsdl:documentation>
+            <soap:address location="https://to-be-defined.de/services/"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

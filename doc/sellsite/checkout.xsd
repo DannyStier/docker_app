@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+<schema xmlns:checkout="https://scireum.de/2020/checkout/" xmlns:common="https://scireum.de/2020/common/"
+        xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="https://scireum.de/2020/checkout/"
+        elementFormDefault="qualified">
+
+    <annotation>
+        <documentation>Types used in checkout related web services.</documentation>
+    </annotation>
+
+    <import namespace="https://scireum.de/2020/common/" schemaLocation="common.xsd"/>
+
+    <element name="GetTour">
+        <complexType>
+            <sequence>
+                <group ref="common:CommonRequestFields"/>
+                <element minOccurs="0" name="DeliveryAddress" type="common:PhysicalAddress">
+                    <annotation>
+                        <documentation>The delivery address where the tours should deliver to.</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="DesiredDeliveryDate" type="dateTime">
+                    <annotation>
+                        <documentation>The desired delivery date and time. If none is given, the next appropriate
+                            tours should be returned.</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="DeliveryArea" type="string">
+                    <annotation>
+                        <documentation>As alternative to 'DeliveryAddress' an area can be passed.</documentation>
+                    </annotation>
+                </element>
+                <element minOccurs="0" name="PreviousTourId" type="string">
+                    <annotation>
+                        <documentation>Optional the tourId of the previous selected tour.</documentation>
+                    </annotation>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="GetTourResponse">
+        <complexType>
+            <sequence>
+                <element minOccurs="0" ref="common:TechnicalMessage"/>
+                <element maxOccurs="unbounded" minOccurs="0" name="Tours" type="checkout:TourType">
+                    <annotation>
+                        <documentation>Possible tours. Should be in chronological order.</documentation>
+                    </annotation>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+
+
+    <complexType name="TourType">
+        <sequence>
+            <element name="Id" type="string">
+                <annotation>
+                    <documentation>A unique identifier of the tour. Might be equal to 'Label' if that has uniqueness.
+                    </documentation>
+                </annotation>
+            </element>
+            <element name="Label" type="string">
+                <annotation>
+                    <documentation>The displayed label of the tour.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="Hint" type="string">
+                <annotation>
+                    <documentation>Contains an additional hint text for the selected tour at the tour selection.
+                    </documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="DeliveryDate" type="dateTime">
+                <annotation>
+                    <documentation>The date and time the tour happens.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="defaultTour" type="boolean">
+                <annotation>
+                    <documentation>Can be used to mark one tour as default tour.</documentation>
+                </annotation>
+            </element>
+            <element minOccurs="0" name="ValidUntil" type="dateTime">
+                <annotation>
+                    <documentation>The validity date and time of the tour. When validity has ended, the tour
+                        cannot be chosen anymore.
+                    </documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+
+</schema>

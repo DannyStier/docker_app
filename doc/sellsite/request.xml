@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:cus="https://scireum.de/2020/customerData/" xmlns:com="https://scireum.de/2020/common/"
+                  xmlns:vouc="https://scireum.de/2020/voucher/" xmlns:deli="https://scireum.de/2020/deliveryAddress/"
+                  xmlns:pa="https://scireum.de/2020/priceAndAvailability/"
+                  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:commi="https://scireum.de/2020/commissions/" xmlns:check="https://scireum.de/2020/checkout/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <cus:GetCustomerData>
+            <com:SharedSecret>shared secret for the request</com:SharedSecret>
+            <com:Language>de</com:Language>
+            <com:CustomerNumber>12345</com:CustomerNumber>
+            <!--Optional-->
+            <com:UserId>test@scireum.de</com:UserId>
+        </cus:GetCustomerData>
+    </soapenv:Body>
+</soapenv:Envelope>

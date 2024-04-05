@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:cus="https://scireum.de/2020/customerData/" xmlns:com="https://scireum.de/2020/common/"
+                  xmlns:pa="https://scireum.de/2020/priceAndAvailability/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <pa:GetPriceAndAvailabilityResponse>
+            <!--Optional:-->
+            <com:TechnicalMessage>Technische Nachricht</com:TechnicalMessage>
+            <pa:PositionResponse>
+                <pa:PositionId>0</pa:PositionId>
+                <pa:ItemNumber>99999</pa:ItemNumber>
+                <pa:Quantity>1</pa:Quantity>
+                <!--Optional-->
+                <pa:CorrectedQuantity>1</pa:CorrectedQuantity>
+                <!--Optional-->
+                <pa:PriceUnit>STK</pa:PriceUnit>
+                <!--Zero or more net price scales-->
+                <pa:NetPriceScale>
+                    <!--the condition value-->
+                    <pa:ValueCondition>5</pa:ValueCondition>
+                    <!--the price-->
+                    <pa:Price>5.31</pa:Price>
+                    <!--LOWER_LIMIT or MODULO-->
+                    <pa:PriceScaleCondition>LOWER_LIMIT</pa:PriceScaleCondition>
+                </pa:NetPriceScale>
+                <!--Optional-->
+                <pa:NetPrice>13.91</pa:NetPrice>
+                <!--Optional-->
+                <pa:NetPriceDiscount>0.00</pa:NetPriceDiscount>
+                <!--Optional-->
+                <pa:GrossPrice>17.85</pa:GrossPrice>
+                <!--Optional-->
+                <pa:NetPricePerUnit>13.91</pa:NetPricePerUnit>
+                <!--Optional-->
+                <pa:GrossPricePerUnit>17.85</pa:GrossPricePerUnit>
+                <!--Optional-->
+                <pa:Currency>EUR</pa:Currency>
+                <!--Zero or more Packaging units-->
+                <pa:PackingUnit>
+                    <pa:Id>123</pa:Id>
+                    <pa:Name>pallet</pa:Name>
+                    <pa:Quantity>50</pa:Quantity>
+                </pa:PackingUnit>
+                <!--Optional-->
+                <pa:StockUnit/>
+                <!--Zero or more Stock entries-->
+                <pa:Stock>
+                    <pa:Id>1</pa:Id>
+                    <pa:AvailabilitySignal>OUT_OF_STOCK</pa:AvailabilitySignal>
+                    <pa:StockType>DELIVERY</pa:StockType>
+                    <pa:QuantityOnHand>0</pa:QuantityOnHand>
+                    <pa:AvailabilityDate>2022-01-25</pa:AvailabilityDate>
+                    <com:Message/>
+                    <com:MessageId/>
+                </pa:Stock>
+                <pa:Stock>
+                    <pa:Id>2</pa:Id>
+                    <pa:AvailabilitySignal>IN_STOCK</pa:AvailabilitySignal>
+                    <pa:StockType>PICKUP</pa:StockType>
+                    <pa:QuantityOnHand>5</pa:QuantityOnHand>
+                    <pa:AvailabilityDate>2022-01-25</pa:AvailabilityDate>
+                    <com:Message/>
+                    <com:MessageId/>
+                </pa:Stock>
+                <!--Optional-->
+                <pa:BadgeList>
+                    <pa:Badge>
+                        <pa:Label>Bestellartikel</pa:Label>
+                        <pa:CSS>orderitem</pa:CSS>
+                    </pa:Badge>
+                </pa:BadgeList>
+                <!--An optional message with id and type-->
+                <!--Optional:-->
+                <com:Message>WARNUNG AUF POS-EBENE</com:Message>
+                <!--Optional:-->
+                <com:MessageId>1</com:MessageId>
+                <!--Optional:-->
+                <com:MessageType>WARNING</com:MessageType>
+            </pa:PositionResponse>
+        </pa:GetPriceAndAvailabilityResponse>
+        <!--Optional:-->
+        <com:Message>FEHLER AUF HEAD-EBENE</com:Message>
+        <!--Optional:-->
+        <com:MessageId>1</com:MessageId>
+        <!--Optional:-->
+        <com:MessageType>PROBLEM</com:MessageType>
+    </soapenv:Body>
+</soapenv:Envelope>

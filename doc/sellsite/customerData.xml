@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Made with all the love in the world
+  ~ by scireum in Remshalden, Germany
+  ~
+  ~ Copyright by scireum GmbH
+  ~ http://www.scireum.de - info@scireum.de
+  -->
+
+<wsdl:definitions
+        xmlns:customerData="https://scireum.de/2020/customerData/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://scireum.de/2020/customerData/">
+    <wsdl:documentation>Webservice for customer base data.</wsdl:documentation>
+
+    <!-- Types from external XSD -->
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="https://scireum.de/2020/customerData/" schemaLocation="customerData.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+
+    <wsdl:message name="GetCustomerDataRequest">
+        <wsdl:part name="parameters" element="customerData:GetCustomerData"/>>
+    </wsdl:message>
+    <wsdl:message name="GetCustomerDataResponse">
+        <wsdl:part name="parameters" element="customerData:GetCustomerDataResponse"/>>
+    </wsdl:message>
+    <wsdl:message name="GetLimitRequest">
+        <wsdl:part name="parameters" element="customerData:GetLimit"/>>
+    </wsdl:message>
+    <wsdl:message name="GetLimitResponse">
+        <wsdl:part name="parameters" element="customerData:GetLimitResponse"/>>
+    </wsdl:message>
+
+    <!-- Port types -->
+
+    <wsdl:portType name="CustomerDataWebservices">
+        <wsdl:documentation>Webservice for customer base data.</wsdl:documentation>
+        <wsdl:operation name="GetCustomerData">
+            <wsdl:documentation>Get referenced customer data by given customer id</wsdl:documentation>
+            <wsdl:input message="customerData:GetCustomerDataRequest"/>
+            <wsdl:output message="customerData:GetCustomerDataResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetLimit">
+            <wsdl:documentation>Get customer limit by given customer id</wsdl:documentation>
+            <wsdl:input message="customerData:GetLimitRequest"/>
+            <wsdl:output message="customerData:GetLimitResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Bindings -->
+
+    <wsdl:binding name="CustomerDataWebservice" type="customerData:CustomerDataWebservices">
+        <wsdl:documentation>Webservice for customer base data.</wsdl:documentation>
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetCustomerData">
+            <soap:operation soapAction="https://scireum.de/2020/customerData/GetCustomerData"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetLimit">
+            <soap:operation soapAction="https://scireum.de/2020/customerData/GetLimit"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Service -->
+
+    <wsdl:service name="customerData">
+        <wsdl:documentation>Webservice for customer base data</wsdl:documentation>
+        <wsdl:port name="CustomerDataWebservice" binding="customerData:CustomerDataWebservice">
+            <wsdl:documentation>Webservice providing interaction with customer base data for Sellsite</wsdl:documentation>
+            <soap:address location="https://to-be-defined.de/services/"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
