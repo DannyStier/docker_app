@@ -1,9 +1,18 @@
 class Api
 
-  def price_and_availibility
+  def is_authorized?(customer, hmac_hash)
+    secret = 'test'
+    timestamp, hmac_hash = hmac_hash.split(':')
+
+    digest = OpenSSL::Digest.new('sha256')
+    our_hash = OpenSSL::HMAC.hexdigest(digest, secret, timestamp + customer)
+    if our_hash == hmac_hash
+      return true
+    else
+      return false
+    end
   end
 
-  def shared_secret
-    auth = '1597747530:22edf8e264af707e23a95dbd0c97a8f3f65500715501383a731a40bdb933fd6c'
+  def parse_soap_payload
   end
 end
