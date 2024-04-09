@@ -48,7 +48,10 @@ gem "bootsnap", require: false
 # ETL Kram
 gem "nokogiri" # XML Verarbeitung
 gem "awesome_print" # pp ersatz
-
+gem 'activeadmin' # backend admin scaffolds
+gem 'devise'
+# Use Sass to process CSS
+gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

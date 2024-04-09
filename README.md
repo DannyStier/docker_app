@@ -30,3 +30,10 @@ https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-wi
 # docker
 
 https://github.com/ryanwi/rails7-on-docker
+
+# Bundle update
+
+```
+docker compose run --rm web bundle update
+docker compose up --build
+```
