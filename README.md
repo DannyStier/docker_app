@@ -35,5 +35,5 @@ https://github.com/ryanwi/rails7-on-docker
 
 ```
 docker compose run --rm web bundle update
-docker compose up --build
+docker compose up --build -d
 ```

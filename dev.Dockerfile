@@ -19,7 +19,8 @@ RUN --mount=type=cache,target=/var/cache/apt \
     libpq-dev \
     postgresql-client \
     libvips \
-    curl
+    curl \
+    wkhtmltopdf
 
 ENV LANG=C.UTF-8 \
   BUNDLE_JOBS=4 \
